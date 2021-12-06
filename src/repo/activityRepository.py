@@ -27,7 +27,7 @@ class ActivityRepository:
 
     def find_activity_by_id(self, activity_id):
         """
-        Method for finding an activity by its id
+        Function for finding an activity by its id
         """
         aux = self.filter(self._activity_list, lambda x: x.activity_id == activity_id)
         if len(aux) == 0:
@@ -38,7 +38,7 @@ class ActivityRepository:
     # TODO: verify find_activity_by_date: you changed return aux[0] into return aux
     def find_activity_by_date(self, date):
         """
-        Method for finding an activity by its date
+        Function for finding an activity by its date
         """
         aux = self.filter(self._activity_list, lambda x: x.date == date)
         if len(aux) == 0:
@@ -48,7 +48,7 @@ class ActivityRepository:
 
     def find_activity_by_time(self, date, time):
         """
-        Method for finding an activity by its time
+        Function for finding an activity by its time
         """
         activity_list = self._activity_list
         ok = 1
@@ -69,7 +69,7 @@ class ActivityRepository:
 
     def find_activity_by_persons(self, person_id):
         """
-        Method for finding an activity by the participating persons
+        Function for finding an activity by the participating persons
         """
         list_of_activities = []
         for i in self._activity_list:
@@ -80,24 +80,22 @@ class ActivityRepository:
 
     def add_activity(self, activity):
         """
-        Method for adding an activity to the class
+        Function for adding an activity to the class
         """
         self._activity_list.append(activity)
 
     def remove_activity(self, activity):
         """
-        Method for removing an activity from the class
+        Function for removing an activity from the class
         """
         self._activity_list.remove(activity)
 
     def update_activity(self, activity_id, person_id, date, time, description):
         """
-        Method for updating an activity in the class
+        Function for updating an activity in the class
         """
         activity = self.find_activity_by_id(activity_id)
         activity.person_id = person_id
         activity.date = date
         activity.time = time
         activity.description = description
-
-

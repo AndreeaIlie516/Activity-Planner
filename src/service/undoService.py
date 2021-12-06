@@ -1,3 +1,6 @@
+from src.exception.exception import UndoServiceException
+
+
 class UndoController:
     def __init__(self):
         self._history = []
@@ -12,7 +15,7 @@ class UndoController:
 
     def undo(self):
         if self._index == 0:
-            raise Exception("You cannot compute more undos")
+            raise UndoServiceException("You cannot compute more undos")
         self._duringUndoRedo = True
         self._index -= 1
         self._history[self._index].undo()
@@ -20,7 +23,7 @@ class UndoController:
 
     def redo(self):
         if self._index == len(self._history):
-            raise Exception("You cannot compute more undos")
+            raise UndoServiceException("You cannot compute more redos")
         self._duringUndoRedo = True
         self._history[self._index].redo()
         self._index += 1

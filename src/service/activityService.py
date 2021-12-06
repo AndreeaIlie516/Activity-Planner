@@ -2,9 +2,6 @@ from src.domain.activity import Activity
 from src.repo.activityRepository import ActivityRepository
 from src.repo.personRepository import PersonRepository
 from src.exception.exception import ActivityServiceException
-from src.service.undoService import UndoController
-from src.ui import ui
-from src.ui.ui import UI
 import random
 import datetime
 import re
@@ -42,14 +39,15 @@ class ActivityService:
         """
         descriptions = self.list_of_descriptions()
         activities = []
-        for i in range(30):
+        for i in range(20):
             activity_id = random.randint(1000, 9999)
             while activity_id in [x.activity_id for x in activities]:
                 activity_id = random.randint(1000, 9999)
             person_id = []
             for j in range(random.randint(0, 10)):
                 pid = random.choice(self._person_service.persons).person_id
-                person_id.append(pid)
+                if pid not in person_id:
+                    person_id.append(pid)
             description = random.choice(descriptions)
             # descriptions.remove(description)
             random_date_time = self.random_date()
@@ -93,7 +91,7 @@ class ActivityService:
                 if id1 == i:
                     id = i
             if exists == 0:
-                raise ActivityServiceException("The are no person with the ID " + str(id) + " in the list!\n")
+                raise ActivityServiceException("The is no person with the ID " + str(id) + " in the list!\n")
 
         """for i in range(len(person_id)):
             activity_list = self._activity_repository.find_activity_by_persons(person_id[i])
@@ -102,9 +100,6 @@ class ActivityService:
                 if activ.date == date:
                     if activ.time == time:
                         raise ValueError("Person with the ID " + str(person_id[i]) + "cannot perform two activities "
-
-
-
                                                                                      "simultaneously" )"""
         if self._undoController is not False:
             undo = FunctionCall(self.remove_activity, activity_id)
@@ -120,10 +115,11 @@ class ActivityService:
         """
         activity = self._activity_repository.find_activity_by_id(activity_id)
         if not activity:
-            raise ActivityServiceException("There are no activity with the ID " + str(activity_id) + "!\n")
+            raise ActivityServiceException("There is no activity with the ID " + str(activity_id) + "!\n")
 
         if self._undoController is not False:
-            undo = FunctionCall(self.add_activity, activity.activity_id, activity.person_id, activity.date, activity.time,
+            undo = FunctionCall(self.add_activity, activity.activity_id, activity.person_id, activity.date,
+                                activity.time,
                                 activity.description)
             redo = FunctionCall(self.remove_activity, activity_id)
             op = Operation(undo, redo)
@@ -137,7 +133,7 @@ class ActivityService:
         """
         activity = self._activity_repository.find_activity_by_id(activity_id)
         if not activity:
-            raise ActivityServiceException("There are no activity with the ID " + str(activity_id) + "!\n")
+            raise ActivityServiceException("There is no activity with the ID " + str(activity_id) + "!\n")
 
         if self._undoController is not False:
             undo = FunctionCall(self.update_activity, activity.activity_id, activity.person_id, activity.date,
@@ -146,6 +142,26 @@ class ActivityService:
             redo = FunctionCall(self.update_activity, activity_id, person_id, date, time, description)
             op = Operation(undo, redo)
             self._undoController.recordOperation(op)
+
+        self._activity_repository.update_activity(activity_id, person_id, date, time, description)
+
+    @staticmethod
+    def remove_person_activities(person_id, activity_list):
+        for activity in activity_list:
+            activity.remove(person_id)
+
+    def add_person_activities(self, person_id, activity_list):
+        for activity in activity_list:
+            activity.append(person_id)
+
+    def update_activity_from_person(self, activity_id, person_id, date, time, description):
+        """
+        Function for updating an activity in the class
+        """
+
+        activity = self._activity_repository.find_activity_by_id(activity_id)
+        if not activity:
+            raise ActivityServiceException("There is no activity with the ID " + str(activity_id) + "!\n")
 
         self._activity_repository.update_activity(activity_id, person_id, date, time, description)
 
@@ -183,7 +199,7 @@ class ActivityService:
                     new_date.append(0)
             return int(new_date[0]), int(new_date[1]), int(new_date[2])
         except Exception as ve:
-            ui.print_exception(ve)
+            print(ve)
 
     @staticmethod
     def split_date_2(date):
@@ -201,7 +217,7 @@ class ActivityService:
                 index += 1
             return int(new_date[2]), int(new_date[1]), int(new_date[0])
         except Exception as ve:
-            ui.print_exception(ve)
+            print(ve)
 
     @staticmethod
     def split_time(time):
@@ -222,7 +238,7 @@ class ActivityService:
                     new_time.append(0)
             return int(new_time[0]), int(new_time[1]), int(new_time[2])
         except Exception as ve:
-            ui.print_exception(ve)
+            print(ve)
 
     def search_activity_by_date(self, date):
         """
@@ -257,8 +273,13 @@ class ActivityService:
         """
         Function for searching for an activity by the persons participating
         """
-        return [activity for activity in self._activity_repository.activities
-                if re.search(str(person_id), str(activity.person_id), re.IGNORECASE)]
+        ls = list()
+        for i in self._activity_repository.activities:
+            if person_id in i.person_id:
+                ls.append(i.person_id)
+        return ls
+        # return [activity for activity in self._activity_repository.activities
+        #         if re.search(str(person_id), str(activity.person_id), re.IGNORECASE)]
 
     def create_statistic_activities_by_date(self, date):
         """
@@ -304,24 +325,34 @@ class ActivityService:
             new_date = datetime.date(year, month, day)
             new_date = new_date.strftime("%d/%m/%Y")
             if str(date) >= str(now):
-                if i.date not in list_of_date:
+                new_list = [str(i.date.strftime("%d/%m/%Y")), self.number_of_activities_in_a_day(i.date)]
+                if new_list not in list_of_date:
                     list_of_date.append([str(new_date), self.number_of_activities_in_a_day(i.date)])
         for i in range(0, len(list_of_date)):
             for j in range(i + 1, len(list_of_date)):
                 if list_of_date[i][1] < list_of_date[j][1]:
                     aux = list_of_date[i]
-                    list_of_date[j] = list_of_date[i]
-                    list_of_date[i] = aux
+                    list_of_date[i] = list_of_date[j]
+                    list_of_date[j] = aux
         for i in range(0, len(list_of_date)):
             for j in range(0, len(list_of_date)):
                 for k in range(j + 1, len(list_of_date)):
                     if list_of_date[j][1] == list_of_date[k][1] == list_of_date[i][1]:
                         if list_of_date[j][0] > list_of_date[k][0]:
                             aux = list_of_date[j]
-                            list_of_date[k] = list_of_date[j]
-                            list_of_date[j] = aux
-
+                            list_of_date[j] = list_of_date[k]
+                            list_of_date[k] = aux
         return list_of_date
+
+    def remove_person_from_activities(self, person_id):
+        activity_list = self.search_activity_by_person(person_id)
+        for activity in activity_list:
+            for i in range(0, len(activity.person_id) - 1):
+                if activity.person_id[i] == person_id:
+                    del activity.person_id[i]
+            if activity.person_id[len(activity.person_id) - 1] == person_id:
+                del activity.person_id[len(activity.person_id) - 1]
+        print(activity_list)
 
     def create_statistic_activities_by_person(self, person_id):
         """
@@ -366,4 +397,3 @@ class ActivityService:
             "an entire week) "
         ]
         return list_of_descriptions
-

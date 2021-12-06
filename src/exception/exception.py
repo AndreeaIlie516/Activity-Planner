@@ -18,26 +18,6 @@ class ActivityDomainException(Exception):
         super().__init__(message)
 
 
-class PersonRepositoryException(Exception):
-    """
-    Exception class for PersonRepository
-    """
-
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
-class ActivityRepositoryException(Exception):
-    """
-    Exception class for ActivityRepository
-    """
-
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
 class PersonServiceException(Exception):
     """
     Exception class for PersonService
@@ -57,22 +37,12 @@ class ActivityServiceException(Exception):
         self.message = message
         super().__init__(message)
 
-
-class UIException(Exception):
+class UndoServiceException(Exception):
     """
-    Exception class for UI
-    """
-
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
-class ConditionsException(Exception):
-    """
-    Exception class for Conditions
+    Exception class for ActivityService
     """
 
     def __init__(self, message):
         self.message = message
         super().__init__(message)
+

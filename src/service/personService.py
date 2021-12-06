@@ -11,8 +11,8 @@ class PersonService:
     def __init__(self, person_repository, activity_repository, undoController=False, generate=False):
         self._person_repository = person_repository
         self._activity_repository = activity_repository
-        activity_service = ActivityService(person_repository, activity_repository, self, undoController)
-        self._activity_service = activity_service
+        # activity_service = ActivityService(person_repository, activity_repository, self, undoController)
+        self._activity_service = ActivityService(person_repository, activity_repository, self, undoController)
         if generate:
             self._person_repository = PersonRepository(self.generate_person())
         self._undoController = undoController
@@ -39,7 +39,7 @@ class PersonService:
             persons.append(Person(person_id, name, phone_number))
         return persons
 
-    def add_person(self, person_id, name, phone_number):
+    def add_person(self, person_id, name, phone_number, activity_list):
         """
         Function for adding a person to the class
         """
@@ -50,27 +50,33 @@ class PersonService:
             raise PersonServiceException("Person with the phone number " + str(phone_number) + " already exists!\n")
 
         if self._undoController is not False:
-            undo = FunctionCall(self.remove_person, person.person_id)
-            redo = FunctionCall(self.add_person, person_id, name, phone_number)
+            undo = FunctionCall(self.remove_person, person.person_id, activity_list)
+            redo = FunctionCall(self.add_person, person_id, name, phone_number, activity_list)
             op = Operation(undo, redo)
             self._undoController.recordOperation(op)
 
         self._person_repository.add_person(person)
 
     # TODO: check activity by removing a person
-    def remove_person(self, person_id):
+    def remove_person(self, person_id, activity_list):
         """
         Function for removing a person from the class
         """
         person = self._person_repository.find_person_by_id(person_id)
         if not person:
-            raise PersonServiceException("There are no person with the ID " + str(person_id) + "!\n")
+            raise PersonServiceException("There is no person with the ID " + str(person_id) + "!\n")
+
+        self._activity_service.remove_person_activities(person_id, activity_list)
 
         if self._undoController is not False:
-            undo = FunctionCall(self.add_person, person.person_id, person.name, person.phone_number)
-            redo = FunctionCall(self.remove_person, person_id)
-            op = Operation(undo, redo)
-            self._undoController.recordOperation(op)
+            undo_person = FunctionCall(self.add_person, person.person_id, person.name, person.phone_number)
+            redo_person = FunctionCall(self.remove_person, person_id, activity_list)
+            op_person = Operation(undo_person, redo_person)
+            undo_activity = FunctionCall(
+                self._activity_service.add_person_activities, person_id, activity_list)
+            redo_activity = FunctionCall(self._activity_service.remove_person_activities, person_id, activity_list)
+            op_activity = Operation(undo_activity, redo_activity)
+            self._undoController.recordOperation(op_activity)
 
         self._person_repository.remove_person(person)
 
@@ -80,7 +86,7 @@ class PersonService:
         """
         person = self._person_repository.find_person_by_id(person_id)
         if not person:
-            raise PersonServiceException("There are no person with the ID " + str(person_id) + "!\n")
+            raise PersonServiceException("There is no person with the ID " + str(person_id) + "!\n")
 
         if self._undoController is not False:
             undo = FunctionCall(self.update_person, person.person_id, person.name, person.phone_number)

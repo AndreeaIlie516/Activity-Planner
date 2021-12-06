@@ -123,7 +123,8 @@ class UI:
         name = input("Name of the person: ")
         phone_number = str(input("Phone number of the person: "))
         try:
-            self._person_service.add_person(person_id, name, phone_number)
+            activity_list = self._activity_service.search_activity_by_person(person_id)
+            self._person_service.add_person(person_id, name, phone_number, activity_list)
             print("Person added successfully!\n")
         except Exception as e:
             print(e)
@@ -142,10 +143,11 @@ class UI:
             print("Invalid person ID")
         print('\n')
         try:
-            self._person_service.remove_person(person_id)
+            activity_list = self._activity_service.search_activity_by_person(person_id)
+            self._person_service.remove_person(person_id, activity_list)
             print("Person removed successfully!\n")
         except Exception as ve:
-            print(ve)
+           print(ve)
 
     def ui_update_person(self):
         """
