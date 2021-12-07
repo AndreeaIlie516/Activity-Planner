@@ -269,7 +269,7 @@ class ActivityService:
         return [activity for activity in self._activity_repository.activities
                 if re.search(description, activity.description, re.IGNORECASE)]
 
-    def search_activity_by_person(self, person_id):
+    def search_activity_by_person1(self, person_id):
         """
         Function for searching for an activity by the persons participating
         """
@@ -280,6 +280,13 @@ class ActivityService:
         return ls
         # return [activity for activity in self._activity_repository.activities
         #         if re.search(str(person_id), str(activity.person_id), re.IGNORECASE)]
+
+    def search_activity_by_person2(self, person_id):
+        """
+        Function for searching for an activity by the persons participating
+        """
+        return [activity for activity in self._activity_repository.activities
+                if re.search(str(person_id), str(activity.person_id), re.IGNORECASE)]
 
     def create_statistic_activities_by_date(self, date):
         """
@@ -344,21 +351,21 @@ class ActivityService:
                             list_of_date[k] = aux
         return list_of_date
 
-    def remove_person_from_activities(self, person_id):
-        activity_list = self.search_activity_by_person(person_id)
+    """def remove_person_from_activities(self, person_id):
+        activity_list = self.search_activity_by_person1(person_id)
         for activity in activity_list:
             for i in range(0, len(activity.person_id) - 1):
                 if activity.person_id[i] == person_id:
                     del activity.person_id[i]
             if activity.person_id[len(activity.person_id) - 1] == person_id:
                 del activity.person_id[len(activity.person_id) - 1]
-        print(activity_list)
+        print(activity_list)"""
 
     def create_statistic_activities_by_person(self, person_id):
         """
         Function for creating a statistics for activities with a given person
         """
-        activity_list = self.search_activity_by_person(person_id)
+        activity_list = self.search_activity_by_person2(person_id)
         activity_list_date_time = sorted((str(datetime.datetime.combine(activity.date, activity.time)) for activity
                                           in activity_list))
         activity_list_sorted = []

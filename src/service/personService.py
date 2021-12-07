@@ -69,14 +69,16 @@ class PersonService:
         self._activity_service.remove_person_activities(person_id, activity_list)
 
         if self._undoController is not False:
-            undo_person = FunctionCall(self.add_person, person.person_id, person.name, person.phone_number)
+            undo_person = FunctionCall(self.add_person, person.person_id, person.name, person.phone_number,
+                                       activity_list)
             redo_person = FunctionCall(self.remove_person, person_id, activity_list)
             op_person = Operation(undo_person, redo_person)
             undo_activity = FunctionCall(
                 self._activity_service.add_person_activities, person_id, activity_list)
             redo_activity = FunctionCall(self._activity_service.remove_person_activities, person_id, activity_list)
             op_activity = Operation(undo_activity, redo_activity)
-            self._undoController.recordOperation(op_activity)
+            op_cascading = CascadeOperation(op_person, op_activity)
+            self._undoController.recordOperation(op_cascading)
 
         self._person_repository.remove_person(person)
 

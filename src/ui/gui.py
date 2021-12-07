@@ -57,7 +57,7 @@ class GUI:
             if person_id < 1000 or person_id > 9999:
                 textbox.txt.insert(1.0, "Invalid person ID")
             self._person_service.remove_person(person_id)
-            self._activity_service.remove_person_from_activities(person_id)
+            self._activity_service.remove_person_activities(person_id)
             textbox.txt.insert(1.0, "Person removed successfully!")
         except Exception as e:
             textbox.txt.insert(1.0, e)
