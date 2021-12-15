@@ -61,8 +61,9 @@ class GUI:
             person_id = int(person_id)
             if person_id < 1000 or person_id > 9999:
                 textbox.txt.insert(1.0, "Invalid person ID")
-            self._person_service.remove_person(person_id)
-            self._activity_service.remove_person_activities(person_id)
+            activity_list = self._activity_service.search_activity_by_person1(person_id)
+            self._person_service.remove_person(person_id, activity_list)
+            # self._activity_service.remove_person_activities(person_id)
             textbox.txt.insert(1.0, "Person removed successfully!")
         except Exception as e:
             textbox.txt.insert(1.0, e)
@@ -317,13 +318,13 @@ class StartText(tk.Frame):
 class Text(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.grid_propagate(False)
-        self.grid_rowconfigure(0, weight=0)
-        self.grid_columnconfigure(0, weight=0)
+        self.grid_propagate(True)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.txt = tk.Text(self)
-        self.txt.grid(row=0, column=0, padx=0, pady=2)
-        self.configure(bg="#d7d7f4")
-        self.txt.configure(bg="#d7d7f4", pady=10)
+        self.txt.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+        self.configure(bg="#e5d7f4")
+        self.txt.configure(bg="#e5d7f4", pady=2)
         self.txt.tag_configure("tag", justify='center')
         self.txt.tag_add("tag", "1.0", "end")
 
@@ -346,7 +347,7 @@ class StartPage(tk.Frame):
         self.configure(bg=color_bg)
         self.controller = controller
 
-        self.textbox = self.canvas.create_text(570, 50, text="Welcome to your Activity Planner!", fill="black",
+        self.textbox = self.canvas.create_text(570, 100, text="Welcome to your Activity Planner!", fill="black",
                                                font=("Lucida Calligraphy", 20), justify="center")
         # self.textbox.place(relx=-0.15, rely=-0.01, relwidth=0, relheight=0.25)
         button_height = 0.1
@@ -354,23 +355,23 @@ class StartPage(tk.Frame):
         button1 = tk.Button(self, text="Manage persons and activities", font=40,
                             command=lambda: controller.show_frame("ManagePersonsActivities"),
                             bg=color_button, activebackground=color_active, highlightbackground=color_page)
-        button1.place(relx=0.33, rely=0.15, relheight=button_height, relwidth=button_width)
+        button1.place(relx=0.33, rely=0.23, relheight=button_height, relwidth=button_width)
         button2 = tk.Button(self, text="List persons", font=40,
                             command=lambda: controller.show_frame("ListPersonsPage"),
                             bg=color_button, activebackground=color_active, highlightbackground=color_page)
-        button2.place(relx=0.33, rely=0.27, relheight=button_height, relwidth=button_width)
+        button2.place(relx=0.33, rely=0.35, relheight=button_height, relwidth=button_width)
         button3 = tk.Button(self, text="List activities", font=40,
                             command=lambda: controller.show_frame("ListActivitiesPage"),
                             bg=color_button, activebackground=color_active, highlightbackground=color_page)
-        button3.place(relx=0.33, rely=0.39, relheight=button_height, relwidth=button_width)
+        button3.place(relx=0.33, rely=0.47, relheight=button_height, relwidth=button_width)
         button4 = tk.Button(self, text="Search for persons or activities", font=40,
                             command=lambda: controller.show_frame("SearchPage"),
                             bg=color_button, activebackground=color_active, highlightbackground=color_page)
-        button4.place(relx=0.33, rely=0.51, relheight=button_height, relwidth=button_width)
+        button4.place(relx=0.33, rely=0.59, relheight=button_height, relwidth=button_width)
         button5 = tk.Button(self, text="Create Statistics", font=40,
                             command=lambda: controller.show_frame("CreateStatistics"),
                             bg=color_button, activebackground=color_active, highlightbackground=color_page)
-        button5.place(relx=0.33, rely=0.63, relheight=button_height, relwidth=button_width)
+        button5.place(relx=0.33, rely=0.71, relheight=button_height, relwidth=button_width)
 
     def list_persons_action(self):
         self.gui.gui_list_persons(self.textbox)
