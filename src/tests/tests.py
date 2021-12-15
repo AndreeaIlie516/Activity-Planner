@@ -2,12 +2,12 @@ import unittest
 
 from src.domain.person import Person
 from src.domain.activity import Activity
-from src.repo.activityRepository import ActivityRepository
-from src.repo.personRepository import PersonRepository
-from src.service.activityService import ActivityService
-from src.service.personService import PersonService
+from src.repository.baseRepository.activityRepository import ActivityRepository
+from src.repository.baseRepository.personRepository import PersonRepository
+from src.services.activityService import ActivityService
+from src.services.personService import PersonService
 from src.exception.exception import *
-from src.service.undoService import UndoController
+from src.services.undoService import UndoController
 import datetime
 
 
@@ -56,13 +56,6 @@ class PersonDomainTest(unittest.TestCase):
 
         self.assertEqual(person1, person2)
         self.assertNotEqual(person1, person3)
-
-
-"""  def all_tests(self):
-    
-      self.test_person_domain()
-      self.test_person_representation()
-      self.test_person_equals()"""
 
 
 class ActivityDomainTest(unittest.TestCase):
@@ -115,12 +108,6 @@ class ActivityDomainTest(unittest.TestCase):
 
         self.assertEqual(activity1, activity2)
         self.assertNotEqual(activity1, activity3)
-
-    """def all_tests(self):
-        
-        self.test_activity_domain()
-        self.test_activity_representation()
-        self.test_activity_equal()"""
 
 
 class PersonRepoTest(unittest.TestCase):
@@ -360,31 +347,6 @@ class ActivityRepoTest(unittest.TestCase):
                                       "Swimming")
         activity_list = list(activity_repo.activities)
         self.assertEqual(activity_list, [activity1, activity3])
-
-
-"""class AllRepoTest:
-
-    def __init__(self):
-        person_repo_test = PersonRepoTest()
-        self._person_repo_test = person_repo_test
-        activity_repo_test = ActivityRepoTest()
-        self._activity_repo_test = activity_repo_test
-
-    def all_tests(self):
-        
-        self._person_repo_test.test_add_person()
-        self._person_repo_test.test_remove_person()
-        self._person_repo_test.test_remove_person()
-        self._person_repo_test.test_find_person_by_id()
-        self._person_repo_test.test_find_person_by_name()
-        self._person_repo_test.test_find_person_by_phone_number()
-        self._activity_repo_test.test_add_activity()
-        self._activity_repo_test.test_remove_activity()
-        self._activity_repo_test.test_update_activity()
-        self._activity_repo_test.test_find_activity_by_id()
-        self._activity_repo_test.test_find_activity_by_time()
-        self._activity_repo_test.test_find_activity_by_date()
-        self._activity_repo_test.test_find_activity_by_persons()"""
 
 
 class PersonServiceTest(unittest.TestCase):
@@ -926,31 +888,6 @@ class ActivityServiceTest(unittest.TestCase):
 
         self.assertEqual(activity_list, [activity1, activity2, activity3])
 
-
-"""class AllServiceTest:
-   
-
-    def __init__(self):
-        person_service_test = PersonServiceTest()
-        self._person_service_test = person_service_test
-        activity_service_test = ActivityServiceTest()
-        self._activity_service_test = activity_service_test
-
-    def all_tests(self):
-        
-        self._person_service_test.test_add_person()
-        self._person_service_test.test_remove_person()
-        self._person_service_test.test_remove_person()
-        self._person_service_test.test_search_person_by_name()
-        self._person_service_test.test_search_person_by_phone_number()
-        self._activity_service_test.test_add_activity()
-        self._activity_service_test.test_remove_activity()
-        self._activity_service_test.test_update_activity()
-        self._activity_service_test.test_search_activity_by_date()
-        self._activity_service_test.test_search_activity_by_time()
-        self._activity_service_test.test_search_activity_by_description()
-        self._activity_service_test.test_search_activity_by_person()
-        self._activity_service_test.test_create_statistic_activities_by_date()"""
 
 if __name__ == "__main__":
     unittest.main()

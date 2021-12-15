@@ -1,8 +1,8 @@
 from src.domain.person import Person
-from src.repo.personRepository import PersonRepository
+from src.repository.baseRepository.personRepository import PersonRepository
 from src.exception.exception import PersonServiceException
-from src.service.activityService import ActivityService
-from src.service.undoService import *
+from src.services.activityService import ActivityService
+from src.services.undoService import *
 import random
 import re
 
@@ -11,7 +11,6 @@ class PersonService:
     def __init__(self, person_repository, activity_repository, undoController=False, generate=False):
         self._person_repository = person_repository
         self._activity_repository = activity_repository
-        # activity_service = ActivityService(person_repository, activity_repository, self, undoController)
         self._activity_service = ActivityService(person_repository, activity_repository, self, undoController)
         if generate:
             self._person_repository = PersonRepository(self.generate_person())
@@ -23,7 +22,7 @@ class PersonService:
 
     def generate_person(self):
         """
-        Function for generating persons
+        Method for generating persons
         """
         persons = []
         names = self.list_of_names()
@@ -41,7 +40,7 @@ class PersonService:
 
     def add_person(self, person_id, name, phone_number, activity_list):
         """
-        Function for adding a person to the class
+        Method for adding a person to the class
         """
         person = Person(person_id, name, phone_number)
         if self._person_repository.find_person_by_id(person_id):
@@ -57,10 +56,9 @@ class PersonService:
 
         self._person_repository.add_person(person)
 
-    # TODO: check activity by removing a person
     def remove_person(self, person_id, activity_list):
         """
-        Function for removing a person from the class
+        Method for removing a person from the class
         """
         person = self._person_repository.find_person_by_id(person_id)
         if not person:
@@ -84,7 +82,7 @@ class PersonService:
 
     def update_person(self, person_id, name, phone_number):
         """
-        Function for updating a person in the class
+        Method for updating a person in the class
         """
         person = self._person_repository.find_person_by_id(person_id)
         if not person:
@@ -100,49 +98,57 @@ class PersonService:
 
     def search_person_by_name(self, name):
         """
-        Function for searching to a person by its name
+        Method for searching to a person by its name
         """
         return [person for person in self._person_repository.persons if re.search(name, person.name, re.IGNORECASE)]
 
     def search_person_by_phone_number(self, phone_number):
         """
-        Function for searching for a person by its phone number
+        Method for searching for a person by its phone number
         """
         return [person for person in self._person_repository.persons if
                 re.search(phone_number, person.phone_number, re.IGNORECASE)]
 
     @staticmethod
     def list_of_names():
-        list_of_names = [
-            "Jacob Fletcher",
-            "Morgan McLean",
-            "Lydia Boyle",
-            "Courtney Norton",
-            "Aidan Griffiths",
-            "Louie Wheeler",
-            "Sam Brady",
-            "Paige Lamb",
-            "Joseph Carter",
-            "Erin Nelson",
-            "Alexander Wong",
-            "Isabelle Goddard",
-            "Elise Faulkner",
-            "Freddie Mitchell",
-            "Katherine Allan",
-            "Leon Matthews",
-            "Elizabeth Herbert",
-            "Sarah Mellor",
-            "Hollie Farmer",
-            "Jennifer Barton",
-            "Henry Stevenson",
-            "Aaliyah Simmons",
-            "Michael Dickinson",
-            "Louie Weston",
-            "Daisy Clements",
-            "Riley Garner",
-            "Cameron Reed",
-            "Jasmine Coleman",
-            "Katherine Sanderson",
-            "Daniel Hall"
-        ]
-        return list_of_names
+        try:
+            file = open("files/person_names.txt", "r")
+            list_of_names = []
+            for x in file.readlines():
+                list_of_names.append(x[:-1])
+            file.close()
+            return list_of_names
+        except FileNotFoundError:
+            list_of_names = [
+                "Jacob Fletcher",
+                "Morgan McLean",
+                "Lydia Boyle",
+                "Courtney Norton",
+                "Aidan Griffiths",
+                "Louie Wheeler",
+                "Sam Brady",
+                "Paige Lamb",
+                "Joseph Carter",
+                "Erin Nelson",
+                "Alexander Wong",
+                "Isabelle Goddard",
+                "Elise Faulkner",
+                "Freddie Mitchell",
+                "Katherine Allan",
+                "Leon Matthews",
+                "Elizabeth Herbert",
+                "Sarah Mellor",
+                "Hollie Farmer",
+                "Jennifer Barton",
+                "Henry Stevenson",
+                "Aaliyah Simmons",
+                "Michael Dickinson",
+                "Louie Weston",
+                "Daisy Clements",
+                "Riley Garner",
+                "Cameron Reed",
+                "Jasmine Coleman",
+                "Katherine Sanderson",
+                "Daniel Hall"
+            ]
+            return list_of_names

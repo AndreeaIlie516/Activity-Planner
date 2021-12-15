@@ -1,5 +1,4 @@
 import datetime
-from src.exception.exception import *
 
 
 class UI:
@@ -50,7 +49,7 @@ class UI:
         print("\t \t19.Exit the application")
         print()
 
-    def create_menu(self):
+    def start(self):
         """
         Create the menu-driven console user interface
         """
@@ -123,7 +122,7 @@ class UI:
         name = input("Name of the person: ")
         phone_number = str(input("Phone number of the person: "))
         try:
-            activity_list = self._activity_service.search_activity_by_person(person_id)
+            activity_list = self._activity_service.search_activity_by_person1(person_id)
             self._person_service.add_person(person_id, name, phone_number, activity_list)
             print("Person added successfully!\n")
         except Exception as e:
@@ -143,11 +142,11 @@ class UI:
             print("Invalid person ID")
         print('\n')
         try:
-            activity_list = self._activity_service.search_activity_by_person(person_id)
+            activity_list = self._activity_service.search_activity_by_person1(person_id)
             self._person_service.remove_person(person_id, activity_list)
             print("Person removed successfully!\n")
         except Exception as ve:
-           print(ve)
+            print(ve)
 
     def ui_update_person(self):
         """
@@ -206,11 +205,11 @@ class UI:
         new_time = datetime.time(hour, minute, second)
         description = str(input("The description of the activity is: "))
         print('\n')
-        try:
-            self._activity_service.add_activity(activity_id, person_id, new_date, new_time, description)
-            print("Activity added successfully!\n")
-        except Exception as e:
-            print(e)
+        #try:
+        self._activity_service.add_activity(activity_id, person_id, new_date, new_time, description)
+        print("Activity added successfully!\n")
+        # except Exception as e:
+            #print(e)
 
     def ui_remove_activity(self):
         """
@@ -245,8 +244,6 @@ class UI:
         if activity_id < 1000 or activity_id > 9999:
             print("Invalid person ID")
             return
-        """print("Please select persons from the following list to add to the activity:")
-        self.list_persons(self._person_service.persons)"""
         person_id = str(input("List of the ids of the persons, separated by space: "))
         person_id = self._activity_service.split_command_param(person_id)
         date = str(input("The date of the activity (in the format dd/mm/yyyy) is: "))
@@ -263,7 +260,6 @@ class UI:
         except Exception as ve:
             print(ve)
 
-    # TODO: validators
     def ui_search_person_by_name(self):
         """
         UI function for searching for a person by the name

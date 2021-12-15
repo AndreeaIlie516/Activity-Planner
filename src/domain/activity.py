@@ -24,6 +24,11 @@ class Activity:
     def __eq__(self, other):
         return self.activity_id == other.activity_id
 
+    def to_dict(self):
+        date = self._date.strftime("%d/%m/%Y")
+        return {"activity_id": self._activity_id, "person_id": self._person_id, "date": date, "time": str(self._time),
+                "description": str(self._description)}
+
     @property
     def activity_id(self):
         return self._activity_id
@@ -50,7 +55,7 @@ class Activity:
             raise ActivityDomainException("Invalid activity ID")
         self._activity_id = x
 
-    @person_id.setter
+    """@person_id.setter
     def person_id(self, x):
         self._person_id = x
 
@@ -65,5 +70,4 @@ class Activity:
     @description.setter
     def description(self, x):
         self._description = x
-
-
+"""

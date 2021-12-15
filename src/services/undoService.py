@@ -8,22 +8,35 @@ class UndoController:
         self._duringUndoRedo = False
 
     def recordOperation(self, operation):
+        """
+        Method for recording an operation
+        :param operation:
+        :return:
+        """
         if self._duringUndoRedo == True:
             return
         self._history.append(operation)
         self._index += 1
 
     def undo(self):
+        """
+        Method for the undo service
+        :return:
+        """
         if self._index == 0:
-            raise UndoServiceException("You cannot compute more undos")
+            raise UndoServiceException("You cannot compute more undos\n")
         self._duringUndoRedo = True
         self._index -= 1
         self._history[self._index].undo()
         self._duringUndoRedo = False
 
     def redo(self):
+        """
+        Method for the redo service
+        :return:
+        """
         if self._index == len(self._history):
-            raise UndoServiceException("You cannot compute more redos")
+            raise UndoServiceException("You cannot compute more redos\n")
         self._duringUndoRedo = True
         self._history[self._index].redo()
         self._index += 1
@@ -31,6 +44,9 @@ class UndoController:
 
 
 class FunctionCall:
+    """
+    Class for calling a function
+    """
     def __init__(self, function, *parameters):
         self._function = function
         self._params = parameters
@@ -40,6 +56,9 @@ class FunctionCall:
 
 
 class Operation:
+    """
+    Operation class
+    """
     def __init__(self, undoFunction, redoFunction):
         self._undo = undoFunction
         self._redo = redoFunction
@@ -52,6 +71,9 @@ class Operation:
 
 
 class CascadeOperation:
+    """
+    Class for cascading an operation
+    """
     def __init__(self, op1, op2):
         self._op1 = op1
         self._op2 = op2

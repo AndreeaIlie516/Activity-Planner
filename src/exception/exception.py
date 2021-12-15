@@ -37,6 +37,7 @@ class ActivityServiceException(Exception):
         self.message = message
         super().__init__(message)
 
+
 class UndoServiceException(Exception):
     """
     Exception class for ActivityService

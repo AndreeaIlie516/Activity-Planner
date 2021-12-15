@@ -1,0 +1,261 @@
+[
+    {
+        "activity_id": 3211,
+        "person_id": [
+            2374
+        ],
+        "date": "18/01/2022",
+        "time": "20:23:00",
+        "description": "Cook (Be careful not to start a fire)"
+    },
+    {
+        "activity_id": 5771,
+        "person_id": [
+            5514,
+            4123,
+            1808,
+            1452
+        ],
+        "date": "23/01/2022",
+        "time": "15:45:00",
+        "description": "Watch a movie (Just another bullshit teenager romance movie)"
+    },
+    {
+        "activity_id": 4108,
+        "person_id": [
+            4123,
+            1981,
+            6786,
+            7936,
+            4275,
+            8129,
+            1213,
+            4892,
+            6143
+        ],
+        "date": "16/01/2022",
+        "time": "02:44:00",
+        "description": "Read (You little nerd)"
+    },
+    {
+        "activity_id": 9973,
+        "person_id": [
+            2751,
+            1213
+        ],
+        "date": "06/01/2022",
+        "time": "00:24:00",
+        "description": "Listen to music (Maneaua Otelul Galati, right?)"
+    },
+    {
+        "activity_id": 7118,
+        "person_id": [
+            8129,
+            1213,
+            6786,
+            1981,
+            6143,
+            5514,
+            4926,
+            4892,
+            5917
+        ],
+        "date": "19/01/2022",
+        "time": "09:58:00",
+        "description": "Play board games (We all know you have no friends)"
+    },
+    {
+        "activity_id": 4137,
+        "person_id": [
+            6786,
+            3376,
+            4123,
+            1981
+        ],
+        "date": "17/12/2021",
+        "time": "03:39:00",
+        "description": "Swim (Be careful not to drown)"
+    },
+    {
+        "activity_id": 8188,
+        "person_id": [
+            4926,
+            7936
+        ],
+        "date": "19/01/2022",
+        "time": "03:45:00",
+        "description": "Watch a movie (Just another bullshit teenager romance movie)"
+    },
+    {
+        "activity_id": 2285,
+        "person_id": [
+            4892,
+            6786
+        ],
+        "date": "29/12/2021",
+        "time": "21:37:00",
+        "description": "Take a walk (Oh, fresh air, just to forget how stupid you are)"
+    },
+    {
+        "activity_id": 7063,
+        "person_id": [
+            2751,
+            4275,
+            5917,
+            1452,
+            5514
+        ],
+        "date": "21/12/2021",
+        "time": "00:36:00",
+        "description": "Cook (Be careful not to start a fire)"
+    },
+    {
+        "activity_id": 1338,
+        "person_id": [
+            6786,
+            6143,
+            2751,
+            7888,
+            2374,
+            1981
+        ],
+        "date": "11/01/2022",
+        "time": "04:11:00",
+        "description": "Study (Still hope to pass the exams, ha?)"
+    },
+    {
+        "activity_id": 9383,
+        "person_id": [
+            6786
+        ],
+        "date": "31/12/2021",
+        "time": "09:40:00",
+        "description": "Attend classes (We all know that you are sleeping)"
+    },
+    {
+        "activity_id": 8815,
+        "person_id": [
+            8129,
+            1452,
+            7936,
+            4123,
+            2374
+        ],
+        "date": "28/01/2022",
+        "time": "09:44:00",
+        "description": "Listen to music (Maneaua Otelul Galati, right?)"
+    },
+    {
+        "activity_id": 8429,
+        "person_id": [
+            2374,
+            6120
+        ],
+        "date": "24/12/2021",
+        "time": "22:15:00",
+        "description": "Cook (Be careful not to start a fire)"
+    },
+    {
+        "activity_id": 7450,
+        "person_id": [
+            2374,
+            5514,
+            6143,
+            1981,
+            4926,
+            4275,
+            1452,
+            6740
+        ],
+        "date": "29/12/2021",
+        "time": "09:45:00",
+        "description": "Skincare (You little princess)"
+    },
+    {
+        "activity_id": 3946,
+        "person_id": [
+            7888,
+            6143,
+            4123,
+            1981,
+            3376,
+            2751,
+            1808,
+            7936
+        ],
+        "date": "08/01/2022",
+        "time": "01:30:00",
+        "description": "Cook (Be careful not to start a fire)"
+    },
+    {
+        "activity_id": 8717,
+        "person_id": [
+            4275,
+            6786,
+            5514,
+            1981,
+            6740
+        ],
+        "date": "20/01/2022",
+        "time": "21:00:00",
+        "description": "Drink alcohol like only computer science students can do"
+    },
+    {
+        "activity_id": 1118,
+        "person_id": [
+            6740,
+            6786,
+            1808,
+            4123,
+            2374,
+            4892,
+            1981
+        ],
+        "date": "23/12/2021",
+        "time": "04:20:00",
+        "description": "Play board games (We all know you have no friends)"
+    },
+    {
+        "activity_id": 6623,
+        "person_id": [
+            6120,
+            5514,
+            1981,
+            6786,
+            1808,
+            6143,
+            2751,
+            7888
+        ],
+        "date": "08/01/2022",
+        "time": "10:12:00",
+        "description": "Go to party (We all know it doesn't happen)"
+    },
+    {
+        "activity_id": 2009,
+        "person_id": [
+            6786
+        ],
+        "date": "14/12/2021",
+        "time": "16:05:00",
+        "description": "Meditate (You hope to become a new Buddha, but you are still angry af)"
+    },
+    {
+        "activity_id": 3643,
+        "person_id": [
+            6143,
+            1213,
+            6120,
+            5514,
+            1981,
+            6786,
+            1808,
+            6143,
+            2751,
+            7888
+        ],
+        "date": "31/12/2021",
+        "time": "23:50:00",
+        "description": "Drink alcohol like only computer science students can do"
+    }
+]
