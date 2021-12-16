@@ -116,6 +116,7 @@ class ActivityService:
         """
         Method for updating an activity in the class
         """
+        # print(person_id)
         activity = self._activity_repository.find_activity_by_id(activity_id)
         if not activity:
             raise ActivityServiceException("There is no activity with the ID " + str(activity_id) + "!\n")

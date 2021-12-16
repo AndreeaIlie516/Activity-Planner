@@ -55,7 +55,7 @@ class Activity:
             raise ActivityDomainException("Invalid activity ID")
         self._activity_id = x
 
-    """@person_id.setter
+    @person_id.setter
     def person_id(self, x):
         self._person_id = x
 
@@ -70,4 +70,3 @@ class Activity:
     @description.setter
     def description(self, x):
         self._description = x
-"""

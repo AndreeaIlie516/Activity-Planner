@@ -37,7 +37,7 @@ class Person:
     def phone_number(self):
         return self._phone_number
 
-    """@person_id.setter
+    @person_id.setter
     def person_id(self, x):
         if x < 1000 or x > 9999:
             raise PersonDomainException("Invalid person ID")
@@ -51,4 +51,4 @@ class Person:
     def phone_number(self, x):
         if len(x) != 10 or not x.isdigit():
             raise PersonDomainException("Invalid phone number")
-        self._phone_number = x"""
+        self._phone_number = x

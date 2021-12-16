@@ -113,12 +113,15 @@ class GUI:
             textbox.txt.insert(1.0, e)
 
     def gui_update_activity(self, textbox, activity_id, person_id, date, time, description):
+
         textbox.txt.delete(1.0, END)
+        day, month, year = self.split_date(date)
+        new_date = datetime.date(year, month, day)
         try:
             activity_id = int(activity_id)
-            self._activity_service.update_activity(activity_id, person_id, date, time, description)
+            self._activity_service.update_activity(activity_id, person_id, new_date, time, description)
 
-            textbox.txt.insert(1.0, "Activity added successfully!")
+            textbox.txt.insert(1.0, "Activity updated successfully!")
         except Exception as e:
             textbox.txt.insert(1.0, e)
 
@@ -483,7 +486,7 @@ class ListActivitiesPage(tk.Frame):
         self.textbox.place(relx=0.1, rely=0.15, relwidth=0.8, relheight=0.8)
 
     def list_activities_action(self):
-        self.gui.gui_list_persons(self.textbox)
+        self.gui.gui_list_activities(self.textbox)
 
 
 class ManagePersonsActivities(tk.Frame):
@@ -832,11 +835,11 @@ class UpdatePerson(tk.Frame):
                                 highlightbackground=self.color_page)
         button_redo.place(relx=0.21, rely=starting_point + space_between * 10, relheight=0.05, relwidth=0.1)
 
-    def update_person_action(self, entry_id, entry_name, entry_phone):
-        self.gui.gui_update_person(self.textbox, entry_id.get(), entry_name.get(), entry_phone.get())
+    def update_person_action(self, entry_id, entry_name, entry_phone_number):
+        self.gui.gui_update_person(self.textbox, entry_id.get(), entry_name.get(), entry_phone_number.get())
         entry_id.delete(0, END)
         entry_name.delete(0, END)
-        entry_phone.delete(0, END)
+        entry_phone_number.delete(0, END)
 
     def undo_action(self):
         self.gui.gui_undo(self.textbox)
