@@ -6,6 +6,7 @@ import random
 import datetime
 import re
 from src.services.undoService import *
+from src.utils.utils import *
 
 
 class ActivityService:
@@ -26,8 +27,8 @@ class ActivityService:
         """
         Method for generating a random date
         """
-        start = datetime.datetime.strptime('10/12/2021 1:00 PM', '%d/%m/%Y %I:%M %p')
-        end = datetime.datetime.strptime('30/01/2022 1:00 PM', '%d/%m/%Y %I:%M %p')
+        start = datetime.datetime.strptime('17/12/2021 1:00 PM', '%d/%m/%Y %I:%M %p')
+        end = datetime.datetime.strptime('30/12/2021 1:00 PM', '%d/%m/%Y %I:%M %p')
         delta = end - start
         int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
         random_second = random.randrange(int_delta)
@@ -116,7 +117,6 @@ class ActivityService:
         """
         Method for updating an activity in the class
         """
-        # print(person_id)
         activity = self._activity_repository.find_activity_by_id(activity_id)
         if not activity:
             raise ActivityServiceException("There is no activity with the ID " + str(activity_id) + "!\n")
@@ -276,12 +276,19 @@ class ActivityService:
         Method for creating a statistics for a given date
         """
         activity_list = self.search_activity_by_date(date)
-        activity_list_time = sorted((str(activity.time) for activity in activity_list))
+        new_activity_list = []
+        for activity in activity_list:
+            new_activity_list.append(activity.to_dict())
+
         activity_list_sorted = []
-        for i in activity_list_time:
-            for activity in activity_list:
-                if str(i) == str(activity.time):
-                    activity_list_sorted.append(activity)
+        activity_dict_sorted = gnome_sort(new_activity_list, key=lambda x: x["time"])
+        for activity in activity_dict_sorted:
+            date = activity["date"]
+            day, month, year = self.split_date(date)
+            new_date = datetime.date(year, month, day)
+            activity_list_sorted.append(
+                Activity(activity["activity_id"], activity["person_id"], new_date, activity["time"],
+                         activity["description"]))
         return activity_list_sorted
 
     def number_of_activities_in_a_day(self, date):
@@ -298,7 +305,10 @@ class ActivityService:
         """
         Method for creating a statistics for the busiest days
         """
-        activity_list = self.activities
+        activity_list_container = self.activities
+        activity_list = []
+        for activity in activity_list_container:
+            activity_list.append(activity)
         now = datetime.datetime.now()
         day = now.day
         month = now.month
@@ -315,39 +325,35 @@ class ActivityService:
                 new_list = [str(i.date.strftime("%d/%m/%Y")), self.number_of_activities_in_a_day(i.date)]
                 if new_list not in list_of_date:
                     list_of_date.append([str(new_date), self.number_of_activities_in_a_day(i.date)])
-        for i in range(0, len(list_of_date)):
-            for j in range(i + 1, len(list_of_date)):
-                if list_of_date[i][1] < list_of_date[j][1]:
-                    aux = list_of_date[i]
-                    list_of_date[i] = list_of_date[j]
-                    list_of_date[j] = aux
-        for i in range(0, len(list_of_date)):
-            for j in range(0, len(list_of_date)):
-                for k in range(j + 1, len(list_of_date)):
-                    if list_of_date[j][1] == list_of_date[k][1] == list_of_date[i][1]:
-                        if list_of_date[j][0] > list_of_date[k][0]:
-                            aux = list_of_date[j]
-                            list_of_date[j] = list_of_date[k]
-                            list_of_date[k] = aux
-        return list_of_date
+
+        date_list = []
+        for date in list_of_date:
+            date_list.append({"date": date[0], "no_activities": date[1]})
+        date_dict_sorted = gnome_sort(date_list, key=lambda x: [x["no_activities"], x["date"]])
+
+        date_list_sorted = []
+        for date in date_dict_sorted:
+            date_list_sorted.append([date["date"], date["no_activities"]])
+        return date_list_sorted
 
     def create_statistic_activities_by_person(self, person_id):
         """
         Method for creating a statistics for activities with a given person
         """
         activity_list = self.search_activity_by_person2(person_id)
-        activity_list_date_time = sorted((str(datetime.datetime.combine(activity.date, activity.time)) for activity
-                                          in activity_list))
+        new_activity_list = []
+        for activity in activity_list:
+            new_activity_list.append(activity.to_dict())
+
         activity_list_sorted = []
-        now = datetime.datetime.now()
-        now = now.strftime("%Y-%m-%d %H:%M:%S")
-
-        for i in activity_list_date_time:
-            if str(i) > str(now):
-                for activity in activity_list:
-                    if str(i) == str(datetime.datetime.combine(activity.date, activity.time)):
-                        activity_list_sorted.append(activity)
-
+        activity_dict_sorted = gnome_sort(new_activity_list, key=lambda x: [x["date"], x["time"]])
+        for activity in activity_dict_sorted:
+            date = activity["date"]
+            day, month, year = self.split_date(date)
+            new_date = datetime.date(year, month, day)
+            activity_list_sorted.append(
+                Activity(activity["activity_id"], activity["person_id"], new_date, activity["time"],
+                         activity["description"]))
         return activity_list_sorted
 
     @staticmethod

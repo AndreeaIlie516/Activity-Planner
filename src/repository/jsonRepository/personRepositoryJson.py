@@ -16,7 +16,7 @@ class PersonRepositoryJson(PersonRepository):
 
     def _save_file(self):
         """
-        Method for saving persons to a CSV file
+        Method for saving persons to a json file
         :return:
         """
         file = open(self.file_name, "w")
@@ -25,7 +25,7 @@ class PersonRepositoryJson(PersonRepository):
 
     def add_person(self, person):
         """
-        Method for adding a person to a CSV file
+        Method for adding a person to a json file
         :param person:
         :return:
         """
@@ -34,7 +34,7 @@ class PersonRepositoryJson(PersonRepository):
 
     def remove_person(self, person_id):
         """
-        Method for removing a person from a CSv file
+        Method for removing a person from a json file
         :param person_id:
         :return:
         """
@@ -43,7 +43,7 @@ class PersonRepositoryJson(PersonRepository):
 
     def update_person(self, person_id, name, phone_number):
         """
-        Method for updating a person on a CSV file
+        Method for updating a person on a json file
         :param person_id:
         :param name:
         :param phone_number:

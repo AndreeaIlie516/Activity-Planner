@@ -9,6 +9,7 @@ from src.services.personService import PersonService
 from src.exception.exception import *
 from src.services.undoService import UndoController
 import datetime
+from src.utils.utils import *
 
 
 class PersonDomainTest(unittest.TestCase):
@@ -531,7 +532,7 @@ class ActivityServiceTest(unittest.TestCase):
         person_service = PersonService(person_repo, activity_repo, generate=True)
         activity_service = ActivityService(person_repo, activity_repo, person_service, generate=True)
 
-        self.assertEqual(len(activity_service.activities), 20)
+        self.assertEqual(len(activity_service.activities), 30)
 
     def test_add_activity(self):
         """
@@ -830,7 +831,7 @@ class ActivityServiceTest(unittest.TestCase):
         activity_service.add_activity(5485, [1452], datetime.date(2021, 12, 30), datetime.time(11, 30), "Reading")
         activity_service.add_activity(5175, [1452], datetime.date(2021, 12, 17), datetime.time(11, 30), "Reading")
         list_of_date = activity_service.create_statistic_activities_by_free_time()
-        self.assertEqual(list_of_date, [['30/12/2021', 2], ['17/12/2021', 1], ['29/12/2021', 1]])
+        self.assertEqual(list_of_date, [['17/12/2021', 1], ['29/12/2021', 1], ['30/12/2021', 2]])
 
     def test_create_statistic_activities_by_person(self):
         person_repo = PersonRepository()
@@ -887,6 +888,32 @@ class ActivityServiceTest(unittest.TestCase):
         activity_list = list(activity_service.activities)
 
         self.assertEqual(activity_list, [activity1, activity2, activity3])
+
+    def test_sorting(self):
+        my_list = [3, 7, 12, 6, 8, 10]
+        new_list = gnome_sort(my_list, reverse=True)
+        self.assertEqual(new_list, [12, 10, 8, 7, 6, 3])
+
+    def test_container(self):
+        person_repo = PersonRepository()
+        person1 = Person(1452, "Lars Ulrich", "0756845612")
+        person2 = Person(1246, "Robb Flynn", "0745236548")
+        person3 = Person(1246, "James Hetfield", "0745236548")
+
+        person_repo.add_person(person1)
+        person_repo.add_person(person2)
+
+        new_container = Container()
+        new_container.append(person1)
+        new_container.append(person2)
+        self.assertEqual(person_repo.persons[0], new_container[0])
+        self.assertEqual(person_repo.persons[1], new_container[1])
+
+        Container.__setitem__(new_container, 0, person3)
+        self.assertEqual(new_container[0], person3)
+
+        Container.__delitem__(new_container, 0)
+        self.assertEqual(new_container[0], person2)
 
 
 if __name__ == "__main__":

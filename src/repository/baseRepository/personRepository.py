@@ -18,7 +18,7 @@ class PersonRepository:
         """
         Method for finding a person by its id
         """
-        aux = filter(self._person_list, lambda x: x.person_id == person_id)
+        aux = custom_filter(self._person_list, lambda x: x.person_id == person_id)
         if len(aux) == 0:
             return None
         else:
@@ -28,7 +28,7 @@ class PersonRepository:
         """
         Method for finding a person by its name
         """
-        aux = filter(self._person_list, lambda x: x.name == name)
+        aux = custom_filter(self._person_list, lambda x: x.name == name)
         if len(aux) == 0:
             return None
         else:
@@ -38,7 +38,7 @@ class PersonRepository:
         """
         Method for finding a person by its phone number
         """
-        aux = filter(self._person_list, lambda x: x.phone_number == phone_number)
+        aux = custom_filter(self._person_list, lambda x: x.phone_number == phone_number)
         if len(aux) == 0:
             return None
         else:

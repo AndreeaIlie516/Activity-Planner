@@ -22,7 +22,7 @@ class ActivityRepository:
         """
         Method for finding an activity by its id
         """
-        aux = filter(self._activity_list, lambda x: x.activity_id == activity_id)
+        aux = custom_filter(self._activity_list, lambda x: x.activity_id == activity_id)
         if len(aux) == 0:
             return None
         else:
@@ -32,7 +32,7 @@ class ActivityRepository:
         """
         Method for finding an activity by its date
         """
-        aux = filter(self._activity_list, lambda x: x.date == date)
+        aux = custom_filter(self._activity_list, lambda x: x.date == date)
         if len(aux) == 0:
             return None
         else:

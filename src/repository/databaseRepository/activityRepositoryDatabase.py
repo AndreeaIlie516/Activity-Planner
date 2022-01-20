@@ -57,7 +57,7 @@ class ActivityRepositoryDatabase(ActivityRepository):
             (activity.activity_id, self.create_string_with_spaces_from_list(activity.person_id),
              str(activity.date.strftime("%d/%m/%Y")), str(activity.time),
              str(activity.description)))
-        # print(type(activity.date))
+        print(type(activity.date))
         ActivityRepository.add_activity(self, activity)
         self.connection.commit()
 
@@ -67,17 +67,14 @@ class ActivityRepositoryDatabase(ActivityRepository):
         self.connection.commit()
 
     def update_activity(self, activity_id, person_id, date, time, description):
-        """print(person_id, date, time)
-        if len(person_id) > 1:
-            person_id = self.split_command_param(person_id)
-        print(person_id)"""
+        print(person_id, date, time)
         self.cursor.execute(
             "UPDATE activities SET person_id= %s, date= %s, time= %s, description= %s WHERE activity_id= %s;",
             (
-                person_id, str(date.strftime("%d/%m/%Y")), str(time),
+                self.split_command_param(person_id), str(date.strftime("%d/%m/%Y")), str(time),
                 description,
                 activity_id))
-        ActivityRepository.update_activity(self, activity_id, self.split_command_param(person_id),
+        ActivityRepository.update_activity(self, activity_id, self.create_string_with_spaces_from_list(person_id),
                                            str(date.strftime("%d/%m/%Y")), time, description)
         self.connection.commit()
 

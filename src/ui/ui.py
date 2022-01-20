@@ -247,11 +247,17 @@ class UI:
         person_id = str(input("List of the ids of the persons, separated by space: "))
         person_id = self._activity_service.split_command_param(person_id)
         date = str(input("The date of the activity (in the format dd/mm/yyyy) is: "))
-        day, month, year = self._activity_service.split_date(date)
-        new_date = datetime.date(year, month, day)
+        try:
+            day, month, year = self._activity_service.split_date(date)
+            new_date = datetime.date(year, month, day)
+        except Exception as ve:
+            print(ve)
         time = str(input("The time of the activity (in the format hh:mm:ss) is: "))
-        hour, minute, second = self._activity_service.split_time(time)
-        new_time = datetime.time(hour, minute, second)
+        try:
+            hour, minute, second = self._activity_service.split_time(time)
+            new_time = datetime.time(hour, minute, second)
+        except Exception as ve:
+            print(ve)
         description = str(input("The description of the activity is: "))
         print('\n')
         try:
@@ -346,7 +352,7 @@ class UI:
         UI function for creating a statistics for the busiest days
         """
         list_of_date = self._activity_service.create_statistic_activities_by_free_time()
-        print("These are the busiest days: ")
+        print("These are your free days: ")
         for i in list_of_date:
             print("On the day " + str(i[0]) + " you have " + str(i[1]) + " upcoming activities")
         print('\n')
